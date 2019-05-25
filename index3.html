@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>Culiyah</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+        <!-- <canvas width = "570" height = "570" id = "my_Canvas"></canvas> -->
+		<script src="js/three.js"></script>
+		<script type="text/javascript">
+			
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild( renderer.domElement );
+
+            const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
+            camera.position.set( 0, 0, 100 );
+            camera.lookAt( 0, 0, 0 );
+
+            const scene = new THREE.Scene();
+
+            // three cone
+            const coneGeo = new THREE.ConeGeometry(5, 15, 32);
+
+            // three sphere
+            const sphereGeo = new THREE.SphereGeometry(5, 32, 32);
+
+            const material = new THREE.MeshBasicMaterial( { color: 0x00ff10 } );
+            const material2 = new THREE.MeshBasicMaterial( { color: 0xffff10 } );
+            const cone = new THREE.Mesh(coneGeo, material2);
+            const sphere = new THREE.Mesh(sphereGeo, material);
+
+            scene.add( cone );
+            scene.add( sphere );
+            sphere.position.z = -30;
+            sphere.position.y = 8;
+
+            camera.position.z = 5;
+            cone.position.z = -30;
+            cone.rotation.z = (Math.PI /2) * 2;
+
+
+            renderer.render( scene, camera );
+
+            // function animate() {
+            //     requestAnimationFrame( animate );
+
+            //     // // animate the cube
+            //     // cube.rotation.x += 0.01;
+			// 	// cube.rotation.y += 0.01;
+
+            //     // // animate the cube2
+            //     // cube2.rotation.x += 0.01;
+			// 	// cube2.rotation.y -= 0.01;
+
+            //     // animate the cube2
+            //     cone.rotation.x += 0.01;
+			// 	cone.rotation.y -= 0.01;
+
+            //     sphere.rotation.x += 0.01;
+            //     sphere.rotation.y -= 0.01;
+
+            //     renderer.render( scene, camera );
+            // }
+            // animate()
+		</script>
+	</body>
+</html>
