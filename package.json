@@ -1,0 +1,22 @@
+{
+  "name": "tree-webgl",
+  "version": "1.0.0",
+  "description": "Final Submission for Graphical Programming Subject",
+  "main": "main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asrulsibaoel/uas-opengl.git"
+  },
+  "author": "Asrul Sani Ariesandy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asrulsibaoel/uas-opengl/issues"
+  },
+  "homepage": "https://github.com/asrulsibaoel/uas-opengl#readme",
+  "dependencies": {
+    "express": "^4.17.0"
+  }
+}

@@ -1,56 +1,59 @@
+
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset=utf-8>
-		<title>My first three.js app</title>
-		<style>
-			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
-		</style>
-	</head>
-	<body>
-        <!-- <canvas width = "570" height = "570" id = "my_Canvas"></canvas> -->
-		<script src="js/three.js"></script>
-		<script src="js/objects/plane.js"></script>
-		<script src="js/objects/sphere.js"></script>
-		<script type="text/javascript">
+<script src='js/three.js'></script>
+<script src='js/FirstPersonControls.js'></script>
+<script src='js/city.js'></script>
+<body style='margin: 0px; background-color: #d8e7ff; overflow: hidden;'><script>
+	const updateFcts	= [];
+	const scene	= new THREE.Scene();
+	scene.fog	= new THREE.FogExp2( 0xC5EFFB, 0.0045 );
+
+	const renderer	= new THREE.WebGLRenderer( { antialias: false } );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setClearColor( scene.fog.color, 1 );
+	document.body.appendChild( renderer.domElement );
+
+	const camera		= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 3000);
+	camera.position.y	= 80;			
 			
-            const renderer = new THREE.WebGLRenderer();
-            renderer.setSize( window.innerWidth, window.innerHeight );
-            document.body.appendChild( renderer.domElement );
+	const light	= new THREE.HemisphereLight( 0xf0f0f0, 0xaaaaaa, 1.25 );
+	light.position.set( 0.75, 1, 0.25 );
+	scene.add( light );
 
-            const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
-            camera.position.set( 0, 0, 100 );
-            camera.lookAt( 0, 0, 0 );
-
-			const scene = new THREE.Scene();
-			scene.add( plane );
-			scene.add( sphere );
-			
-			plane.position.z = -30;
-			sphere.position.z = -30;
-
-            // function animate() {
-            //     requestAnimationFrame( animate );
-
-            //     // // animate the cube
-            //     // cube.rotation.x += 0.01;
-			// 	// cube.rotation.y += 0.01;`
-
-            //     // // animate the cube2
-            //     // cube2.rotation.x += 0.01;
-			// 	// cube2.rotation.y -= 0.01;
-
-            //     // animate the cube2
-            //     // cone.rotation.x += 0.01;
-			// 	// cone.rotation.y -= 0.01;
-
-            //     // sphere.rotation.x += 0.01;
-            //     // sphere.rotation.y -= 0.01;
-
-            //     renderer.render( scene, camera );
-            // }
-            // animate()
-		</script>
-	</body>
-</html>
+	const material	= new THREE.MeshBasicMaterial({ color: 0x333333 })
+	const geometry	= new THREE.PlaneGeometry( 2000, 2000 )
+	const plane	= new THREE.Mesh( geometry, material );
+	plane.rotation.x= - 90 * Math.PI / 180;
+	scene.add( plane );
+	
+	const city	= new ProceduralCity();
+	scene.add(city);			
+	
+	const controls	= new THREE.FirstPersonControls( camera );
+	controls.movementSpeed	= 20;
+	controls.lookSpeed	= 0.05;
+	controls.lookVertical	= true;
+	updateFcts.push(function(delta, now){
+		controls.update( delta );		
+	});			
+	
+	updateFcts.push(function(){
+		renderer.render( scene, camera );		
+	});
+	
+    
+	let lastTimeMsec= null;
+	requestAnimationFrame(function animate(nowMsec){
+		//  keep looping
+		requestAnimationFrame( animate );
+		//  measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60;
+		const deltaMsec	= Math.min(200, nowMsec - lastTimeMsec);
+		lastTimeMsec	= nowMsec;
+		//  call each update function
+		updateFcts.forEach(function(updateFn){
+			updateFn(deltaMsec/1000, nowMsec/1000)
+		})
+	});
+	
+</script></body>
