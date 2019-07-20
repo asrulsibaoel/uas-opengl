@@ -7,6 +7,10 @@ router.get('/',function(req,res){
     res.sendFile(path.join(__dirname+'/index.html'));
     //__dirname : It will resolve to your project folder.
 });
+router.get('/main2',function(req,res){
+    res.sendFile(path.join(__dirname+'/index2.html'));
+    //__dirname : It will resolve to your project folder.
+});
 
 router.get('/js/:fileName',function(req,res){
     const { fileName } = req.params;

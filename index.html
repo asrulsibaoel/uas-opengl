@@ -11,6 +11,8 @@
 	<body>
 		<button id="btnMove" style="position: absolute;">Move</button>
 		<script src="js/three.js"></script>
+		<script src="js/car.js"></script>
+		<script src="js/GLTFLoader.js"></script>
 		<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 		<script src="https://threejs.org/examples/js/libs/tween.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.4/TweenMax.min.js"></script>
@@ -52,6 +54,14 @@
 
 
 
+			var loader = new THREE.TextureLoader();
+				loader.load( 'textures/land_ocean_ice_cloud_2048.jpg', function ( texture ) {
+					var geometry = new THREE.SphereBufferGeometry( 200, 20, 20 );
+					var material = new THREE.MeshLambertMaterial( { map: texture } );
+					var mesh = new THREE.Mesh( geometry, material );
+					group.add( mesh );
+				} );
+
 			const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 32 * radius, 24 * radius), new THREE.MeshBasicMaterial({color: "gray", wireframe: false}));
 			scene.add(sphere);
 
@@ -72,31 +82,38 @@
 
 			//at the center of the sphere to illustrate what the object looks like
 			let singletree;
-			singleTree= new Tree()
-			scene.add(singleTree.mesh)
+			singleTree= new Tree();
+			scene.add(singleTree.mesh);
 
 			const box = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({color: "red", wireframe: false}));
 			box.position.setFromSphericalCoords(radius + 0.1, THREE.Math.degToRad(23), THREE.Math.degToRad(23));
 			box.lookAt(sphere.position);
 			sphere.add(box);
 
-			// load the bird object
-			let loader = new THREE.GLTFLoader();
-			loader.load(
-				"/assets/Parrot.glb",
-				function ( gltf ) {
-					var scale = 5.6;
-					bus.body = gltf.scene.children[0];
-					bus.body.name = "body";
-					bus.body.rotation.set ( 0, -1.5708, 0 );
-					bus.body.scale.set (scale,scale,scale);
-					bus.body.position.set ( 0, 3.6, 0 );
-					bus.body.castShadow = true;
-					bus.frame.add(bus.body);
-				},
-			);
 
-			scene.add(bus.frame);
+			// // load car
+			// for (let i = 0; i < 20; i++) {
+			// 	const car = new Car();
+			// 	scene.add(car.mesh);
+			// }
+
+			// // load the bird object
+			// let loader = new THREE.GLTFLoader();
+			// loader.load(
+			// 	"/assets/Parrot.glb",
+			// 	function ( gltf ) {
+			// 		var scale = 5.6;
+			// 		bus.body = gltf.scene.children[0];
+			// 		bus.body.name = "body";
+			// 		bus.body.rotation.set ( 0, -1.5708, 0 );
+			// 		bus.body.scale.set (scale,scale,scale);
+			// 		bus.body.position.set ( 0, 3.6, 0 );
+			// 		bus.body.castShadow = true;
+			// 		bus.frame.add(bus.body);
+			// 	},
+			// );
+
+			// scene.add(bus.frame);
 
 			createTree();
 
